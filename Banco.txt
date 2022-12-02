@@ -1,0 +1,110 @@
+
+
+
+CREATE TABLE Salario (
+    id_salario int PRIMARY KEY not null,
+    data DATE  not null,
+    valor REAL  not null
+);
+
+CREATE TABLE Endereco (
+    id_endereco int PRIMARY KEY not null,
+    rua VARCHAR(100) not null,
+    bairro VARCHAR(100) not null,
+    cidade VARCHAR (100) not null
+);
+
+CREATE TABLE Contato (
+    id_contato int PRIMARY KEY not null,
+    email VARCHAR(100) not null,
+    celular VARCHAR(30) not null
+);
+
+CREATE TABLE Modulo (
+    id_modulo serial PRIMARY KEY not null,
+    nome_livro VARCHAR(100) not null,
+    teste VARCHAR(100) not null
+);
+
+CREATE TABLE informacoes_pessoais (
+    id_informacao int PRIMARY KEY not null,
+    rg VARCHAR(100) not null,
+    idade INTEGER not null,
+    nome VARCHAR(100) not null,
+    sexo VARCHAR(100) not null
+);
+
+CREATE TABLE Mensalidade (
+    id_mensalidade int PRIMARY KEY not null,
+    valor REAL not null,
+    data_vencimento DATE not null,
+    data_pagamento DATE not null
+);
+
+CREATE TABLE Forma_pagamento (
+    id_formapag int PRIMARY KEY not null,
+    forma_pag VARCHAR(50) not null
+);
+
+CREATE TABLE Alunos (
+    id_aluno int PRIMARY KEY not null,
+    fk_informacoes int,
+    fk_modulo BIGINT,
+    fk_formapag int,
+    fk_contato int,
+    fk_mensalidade int,
+    fk_endereco int,
+foreign key(fk_endereco ) references Endereco(id_endereco),
+foreign key(fk_informacoes) references informacoes_pessoais (id_informacao),
+foreign key(fk_modulo) references Modulo (id_modulo),
+foreign key(fk_formapag) references Forma_pagamento (id_formapag),
+foreign key(fk_contato) references Contato (id_contato),
+foreign key(fk_mensalidade) references Mensalidade (id_mensalidade)
+);
+
+CREATE TABLE Professor (
+    id_professor int PRIMARY KEY not null,
+    curriculo VARCHAR(100) not null,
+    CNP VARCHAR(100) not null,
+    fk_salario BIGINT,
+fk_informacoespessoais int,
+    fk_endereco int,
+    fk_contato int,
+foreign key(fk_salario) references Salario (id_salario),
+foreign key(fk_endereco ) references Endereco(id_endereco),
+foreign key(fk_contato ) references Contato(id_contato),
+foreign key(fk_informacoespessoais) references informacoes_pessoais (id_informacao)
+);
+
+CREATE TABLE Turma (
+
+
+     id_turma Serial PRIMARY KEY not null,
+    periodo_aula VARCHAR(100) not null,
+    nome_turma VARCHAR(100) not null,
+    idioma VARCHAR(100) not null,
+   fk_professor  BIGINT,
+foreign key(fk_professor) references Professor (id_professor)
+   
+
+);
+
+create table AlunoXTurma(
+fk_aluno int,
+fk_turma int,
+foreign key(fk_aluno) references Alunos (id_aluno),
+foreign key(fk_turma ) references Turma (id_turma)
+
+);
+
+
+CREATE TABLE Responsavel (
+    fk_aluno int,
+    fk_informacoespessoais int,
+    fk_contato int,
+fk_endereco int,
+foreign key(fk_endereco ) references Endereco(id_endereco),
+foreign key(fk_informacoespessoais) references informacoes_pessoais (id_informacao),
+foreign key(fk_aluno) references Alunos (id_aluno),
+foreign key(fk_contato) references Contato (id_contato)
+);
